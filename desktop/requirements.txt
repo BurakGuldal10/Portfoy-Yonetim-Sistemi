@@ -1,0 +1,12 @@
+# Portföy Yönetim Sistemi - Masaüstü Uygulaması
+# Desktop Application Requirements
+
+# PyQt6 - GUI Framework
+PyQt6==6.6.1
+PyQt6-sip==13.6.0
+
+# API Communication
+requests==2.31.0
+
+# Utilities
+python-dotenv==1.0.1
