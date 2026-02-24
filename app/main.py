@@ -62,16 +62,14 @@ logger.info(f"📦 Ortam: {settings.ENVIRONMENT}")
 # ---------------------------------------------------------------------------
 # CORS Middleware
 # ---------------------------------------------------------------------------
-# Flutter ve PyQt6 istemcilerinin API'ye erişebilmesi için CORS ayarları.
-# allowed_origins: Production'da kısıtlanmış origin'ler kullanılmalıdır.
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=settings.ALLOWED_ORIGINS,        # Config'den oku
+    allow_origins=["*"],                           # Geliştirme için tüm originlere izin ver
     allow_credentials=True,
-    allow_methods=["GET", "POST", "PUT", "DELETE", "OPTIONS"],  # Belirli metodlar
-    allow_headers=["Content-Type", "Authorization"],             # Belirli header'lar
+    allow_methods=["*"],
+    allow_headers=["*"],
 )
-logger.debug(f"📋 CORS ayarları: origins={settings.ALLOWED_ORIGINS}")
+logger.debug("📋 CORS ayarları: origins=ALL (*)")
 
 
 # ---------------------------------------------------------------------------

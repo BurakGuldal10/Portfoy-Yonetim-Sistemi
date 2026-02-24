@@ -22,7 +22,9 @@ class UserCreate(BaseModel):
         ..., min_length=3, max_length=100, example="burak123"
     )
     password: str = Field(
-        ..., min_length=6, max_length=100, example="guclu_sifre_123"
+        ..., min_length=6, max_length=72, 
+        description="Şifre en az 6 karakter, maksimum 72 karakter olmalıdır.",
+        example="guclu_sifre_123"
     )
     full_name: Optional[str] = Field(
         None, max_length=200, example="Burak Yılmaz"

@@ -46,9 +46,9 @@ class SessionManager:
                     if not self.token or not self.user_data:
                         self._clear_session()
                     else:
-                        print(f"✅ Oturum başarıyla yüklendi. Kullanıcı: {self.get_user_username()}")
+                        print(f"[OK] Oturum başarıyla yüklendi. Kullanıcı: {self.get_user_username()}")
             except Exception as e:
-                print(f"⚠️ Oturum yükleme hatası: {e}")
+                print(f"[HATA] Oturum yükleme hatası: {e}")
                 self._clear_session()
     
     def _clear_session(self):
@@ -73,7 +73,7 @@ class SessionManager:
         self.token = token
         self.user_data = user_data
         self._save_session()
-        print(f"✅ Oturum başlatıldı. Kullanıcı: {self.get_user_username()}")
+        print(f"[OK] Oturum başlatıldı. Kullanıcı: {self.get_user_username()}")
 
     def logout(self):
         """Oturumu bitir."""
@@ -83,7 +83,7 @@ class SessionManager:
         self._save_session()
         if self.session_file.exists():
             self.session_file.unlink()
-        print(f"✅ Oturum sonlandırıldı. Kullanıcı: {username}")
+        print(f"[OK] Oturum sonlandırıldı. Kullanıcı: {username}")
 
     def is_logged_in(self) -> bool:
         """Kullanıcı giriş yapmış mı?"""

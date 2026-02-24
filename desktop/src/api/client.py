@@ -128,29 +128,41 @@ class APIClient:
         })
 
     def login(self, email: str, password: str) -> Dict:
-        """Kullanıcı girişi."""
-        # OAuth2 PasswordRequestForm için form data kullanılmalı
-        response = requests.post(
-            f"{self.base_url}/api/auth/login",
-            data={"username": email, "password": password},
-            timeout=self.timeout
-        )
-
-        if response.status_code >= 400:
-            try:
-                error_data = response.json()
-                error_msg = error_data.get("detail", "Giriş başarısız")
-            except:
-                error_msg = "Giriş başarısız"
-            raise APIError(error_msg)
-
-        response_data = response.json()
+        """Kullanıcı girişi (OAuth2 uyumlu)."""
+        # FastAPI OAuth2PasswordRequestForm 'username' ve 'password' alanlarını form-data olarak bekler
+        url = f"{self.base_url}/api/auth/login"
         
-        # Yanıtın doğru formatta olduğundan emin ol
-        if 'access_token' not in response_data or 'user' not in response_data:
-            raise APIError("API yanıtında eksik alanlar var (access_token veya user)")
-        
-        return response_data
+        try:
+            response = requests.post(
+                url,
+                data={"username": email, "password": password},
+                timeout=self.timeout
+            )
+
+            if response.status_code >= 400:
+                try:
+                    error_data = response.json()
+                    # Detay mesajını veya hata listesini al
+                    detail = error_data.get("detail")
+                    if isinstance(detail, list):
+                        error_msg = detail[0].get("msg", "Giriş başarısız")
+                    else:
+                        error_msg = detail or "Giriş başarısız"
+                except:
+                    error_msg = f"Sunucu Hatası ({response.status_code})"
+                raise APIError(error_msg)
+
+            response_data = response.json()
+            
+            if 'access_token' not in response_data:
+                raise APIError("API yanıtında token bulunamadı.")
+            
+            return response_data
+
+        except (ConnectionError, Timeout):
+            raise APIError("🔴 Sunucuya bağlanılamıyor. Backend çalışıyor mu?")
+        except RequestException as e:
+            raise APIError(f"Bağlantı hatası: {str(e)}")
 
     def get_current_user(self) -> Dict:
         """Mevcut kullanıcı bilgisini al."""

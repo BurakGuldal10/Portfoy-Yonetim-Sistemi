@@ -361,7 +361,7 @@ Bu proje MIT Lisansı altında lisanslanmıştır. Bkz. [LICENSE](LICENSE) dosya
 
 ## 👤 Geliştirici
 
-**Burak Yılmaz**
+**Burak Güldalı**
 - GitHub: [Portfoy-Yonetim-Sistemi](https://github.com/BurakGuldal10/Portfoy-Yonetim-Sistemi)
 
 ---

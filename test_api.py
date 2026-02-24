@@ -23,8 +23,8 @@ def print_response(title, resp):
 
 # 1. Kullanici kaydi
 resp = requests.post(f"{BASE}/auth/register", json={
-    "email": "burak@test.com",
-    "username": "burak123",
+    "email": "buraq@gmail.com",
+    "username": "buraq",
     "password": "test123456",
     "full_name": "Burak Yilmaz"
 })
@@ -32,7 +32,7 @@ print_response("1. KULLANICI KAYDI", resp)
 
 # 2. Giris yap
 resp = requests.post(f"{BASE}/auth/login", data={
-    "username": "burak@test.com",
+    "username": "buraq@gmail.com",
     "password": "test123456"
 })
 print_response("2. GIRIS (LOGIN)", resp)
