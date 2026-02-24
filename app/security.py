@@ -22,7 +22,6 @@ from app.database import get_db
 # Şifre Hashleme Ayarları
 # ---------------------------------------------------------------------------
 # bcrypt: Endüstri standardı şifre hashleme algoritması
-# deprecated="auto": Eski hash formatlarını otomatik olarak günceller
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 
 # ---------------------------------------------------------------------------

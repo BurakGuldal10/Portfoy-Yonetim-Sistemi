@@ -22,8 +22,17 @@ formatter = logging.Formatter(
     datefmt='%Y-%m-%d %H:%M:%S'
 )
 
-# Console Handler (stdout)
-console_handler = logging.StreamHandler(sys.stdout)
+# Console Handler (stdout) - UTF-8 encoding for emoji support
+try:
+    # Windows compatibility: Use UTF-8 for console
+    import io
+    if sys.platform == 'win32':
+        console_handler = logging.StreamHandler(io.TextIOWrapper(sys.stdout.buffer, encoding='utf-8'))
+    else:
+        console_handler = logging.StreamHandler(sys.stdout)
+except:
+    console_handler = logging.StreamHandler(sys.stdout)
+
 console_handler.setLevel(logging.INFO)
 console_handler.setFormatter(formatter)
 logger.addHandler(console_handler)

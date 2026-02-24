@@ -36,6 +36,13 @@ def register_user(db: Session, user_data: UserCreate) -> User:
     Raises:
         HTTPException 400: E-posta veya kullanıcı adı zaten kullanılıyorsa
     """
+    # Şifre uzunluğu kontrolü (bcrypt max 72 bytes)
+    if len(user_data.password.encode('utf-8')) > 72:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail="Şifre 72 karakterden daha kısa olmalıdır.",
+        )
+    
     # E-posta kontrolü (güvenlik: bilgi sızıntısını önlemek için genel hata mesajı)
     existing_email = db.query(User).filter(User.email == user_data.email).first()
     if existing_email:
@@ -93,6 +100,15 @@ def authenticate_user(db: Session, email: str, password: str) -> User:
         HTTPException 401: E-posta veya şifre yanlışsa
         HTTPException 403: Hesap devre dışıysa
     """
+    # Şifre uzunluğu kontrolü (bcrypt max 72 bytes)
+    if len(password.encode('utf-8')) > 72:
+        logger.warning(f"🔒 Başarısız giriş denemesi: Çok uzun şifre - {email}")
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail="E-posta veya şifre hatalı.",
+            headers={"WWW-Authenticate": "Bearer"},
+        )
+    
     user = db.query(User).filter(User.email == email).first()
 
     # Kullanıcı bulunamadı veya şifre yanlış
